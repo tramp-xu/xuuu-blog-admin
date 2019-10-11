@@ -29,6 +29,7 @@
       "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],  // --nolazy: 告诉v8引擎提前编译代码，以便断点正常工作 -r ts-node/register: 这可以确保在执行代码之前加载ts-node
       "sourceMaps": true, 
       "cwd": "${workspaceRoot}",  // 将工作目录设置为项目根目录
+      "protocol": "inspector",    // 将节点调试协议设置为V8 Inspector模式
   }]
 }
 ```

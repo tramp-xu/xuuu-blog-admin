@@ -1,4 +1,4 @@
-import { getAllUser, addUser, getUserInfo } from "../../controller/user/UserAction";
+import { getAllUser, addUser, getUserInfo, login } from "../../controller/user/UserAction";
 
 const UserRouter = [
   {
@@ -7,11 +7,15 @@ const UserRouter = [
     action: addUser
   },
   {
+    path: "/api/login",
+    method: 'post',
+    action: login
+  },
+  {
     path: "/api/user/search",
     method: 'get',
     action: getAllUser
   },
-  
   {
     path: "/api/user/get",
     method: 'get',
