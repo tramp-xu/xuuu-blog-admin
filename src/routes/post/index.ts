@@ -1,7 +1,7 @@
 
-import {postGetAllAction} from "../../controller/PostGetAllAction";
-import {postGetByIdAction} from "../../controller/PostGetByIdAction";
-import {postSaveAction} from "../../controller/PostSaveAction";
+import {postGetAllAction} from "../../control/post/PostGetAllAction";
+import {postGetByIdAction} from "../../control/post/PostGetByIdAction";
+import {postSaveAction} from "../../control/post/PostSaveAction";
 
 const PostRouter = [
   {

@@ -1,4 +1,4 @@
-import { getAllUser, addUser, getUserInfo, login } from "../../controller/user/UserAction";
+import { getAllUser, addUser, getUserInfo, login } from "../../control/user/actions";
 
 const UserRouter = [
   {

@@ -1,12 +1,12 @@
 
 import UserRouter from "./users/index";
-import PostRouter from "./post/index";
+import ArticleRouter from "./article/index";
 /**
  * All application routes.
  */
 const AppRoutes = [
-    ...PostRouter,
-    ...UserRouter
+    ...UserRouter,
+    ...ArticleRouter
 ];
 
 export default AppRoutes;

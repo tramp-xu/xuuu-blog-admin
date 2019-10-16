@@ -1,5 +1,5 @@
-const CodeMap = {
-  0: '成功'
+enum CodeMap {
+  success = '成功'
 }
 
 // const userErrCode = {
