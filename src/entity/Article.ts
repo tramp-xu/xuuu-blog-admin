@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, PrimaryColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn } from "typeorm";
+import { ArticleDetail } from "./ArticleDetail"
 
 @Entity()
 export class Article {
@@ -13,8 +14,8 @@ export class Article {
   @Column("simple-array")
   tags: string[];
 
-  @Column("text")
-  content: string;
+  @Column()
+  viewCount: number = 0;
 
   @CreateDateColumn()
   createdDate: Date;
@@ -22,4 +23,8 @@ export class Article {
   @UpdateDateColumn()
   updatedDate: Date;
 
+  @OneToOne(type => ArticleDetail, detail => detail.article)
+  @JoinColumn()
+  detail: ArticleDetail;
 } 
+

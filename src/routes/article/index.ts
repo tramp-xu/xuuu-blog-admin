@@ -1,10 +1,20 @@
-import { getAllArticle, addArticle, updateArticle } from "../../control/article/actions";
+import { getAllArticle, addArticle, updateArticle, getArticleInfo, getAllArticleInfo } from "../../control/article/actions";
 
 const ArticleRouter = [
   {
     path: "/api/article/search",
     method: 'get',
     action: getAllArticle
+  },
+  {
+    path: "/api/article/detail/search",
+    method: 'get',
+    action: getAllArticleInfo
+  },
+  {
+    path: "/api/article/get/:id",
+    method: 'get',
+    action: getArticleInfo
   },
   {
     path: "/api/article/add",

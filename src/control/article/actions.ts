@@ -1,6 +1,7 @@
 import { Context } from "koa";
 import { getManager } from "typeorm";
 import { Article } from "../../entity/Article";
+import { ArticleDetail } from "../../entity/ArticleDetail";
 // import * as dayjs from "dayjs";
 
 /**
@@ -39,15 +40,45 @@ export async function getAllArticle (context: Context) {
     };
 }
 
+export async function getAllArticleInfo (context: Context) {
+    const repository = getManager().getRepository(Article);
+    const articles = await repository.find({relations: ["detail"]});
+    context.body = {
+        code: 200,
+        data: articles
+    };
+}
+
+export async function getArticleInfo (context: Context) {
+    const repository = getManager().getRepository(Article);
+    const articles = await repository.findOne((context as any).params.id, {
+        relations: ["detail"]
+    });
+
+    // if post was not found return 404 to the client
+    if (!articles) {
+        context.status = 404;
+        return;
+    }
+    context.body = {
+        code: 200,
+        data: articles
+    };
+}
+
 export async function addArticle (context: Context) {
     const repository = getManager().getRepository(Article);
+    const infoRep = getManager().getRepository(ArticleDetail);
     const data:IArticle = context.request.body
     const { title, tags, content } = data
-    // const tagsStr = tags.join(',')
+    const articleInfo = new ArticleDetail()
+    articleInfo.content = content
+    await infoRep.save(articleInfo)
+
     const newArticle = repository.create({
-        title,
-        content,
-        tags
+        title: title,
+        tags: tags,
+        detail: articleInfo
     })
     await repository.save(newArticle);
     context.body = {
