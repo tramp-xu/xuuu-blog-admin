@@ -1,19 +1,25 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, PrimaryColumn } from "typeorm";
 
 @Entity()
 export class Article {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({
+    nullable: false
+  })
   title: string;
 
-  @Column()
-  tags: string;
+  @Column("simple-array")
+  tags: string[];
 
   @Column("text")
   content: string;
 
-  @Column()
-  createTime: number = null;
+  @CreateDateColumn()
+  createdDate: Date;
+
+  @UpdateDateColumn()
+  updatedDate: Date;
+
 } 

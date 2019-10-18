@@ -1,7 +1,7 @@
 import { Context } from "koa";
 import { getManager } from "typeorm";
 import { Article } from "../../entity/Article";
-import * as dayjs from "dayjs";
+// import * as dayjs from "dayjs";
 
 /**
  *  all users actions from the database.
@@ -12,6 +12,23 @@ import * as dayjs from "dayjs";
      content: string,
      tags?: string[]
  } 
+
+//  userRepository.find({
+//     select: ["firstName", "lastName"],
+//     relations: ["profile", "photos", "videos"],
+//     where: {
+//         firstName: "Timber",
+//         lastName: "Saw"
+//     },
+//     order: {
+//         name: "ASC",
+//         id: "DESC"
+//     },
+//     skip: 5,
+//    // 分页条数   
+//     take: 10,
+//     cache: true
+// });
 
 export async function getAllArticle (context: Context) {
     const repository = getManager().getRepository(Article);
@@ -26,13 +43,11 @@ export async function addArticle (context: Context) {
     const repository = getManager().getRepository(Article);
     const data:IArticle = context.request.body
     const { title, tags, content } = data
-    const tagsStr = tags.join(',')
-    const createTime = dayjs().unix()
+    // const tagsStr = tags.join(',')
     const newArticle = repository.create({
         title,
         content,
-        tags: tagsStr,
-        createTime
+        tags
     })
     await repository.save(newArticle);
     context.body = {
