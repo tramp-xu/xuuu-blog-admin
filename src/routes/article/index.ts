@@ -12,7 +12,7 @@ const ArticleRouter = [
     action: getAllArticleInfo
   },
   {
-    path: "/api/article/get/:id",
+    path: "/api/article/get",
     method: 'get',
     action: getArticleInfo
   },

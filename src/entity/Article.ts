@@ -11,6 +11,9 @@ export class Article {
   })
   title: string;
 
+  @Column("text")
+  shorter: string;
+
   @Column("simple-array")
   tags: string[];
 

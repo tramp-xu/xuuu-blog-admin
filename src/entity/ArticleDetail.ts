@@ -7,8 +7,10 @@ export class ArticleDetail {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column("text")
-  content: string;
+  @Column({
+    type: "text"
+  })
+  content: string = '';
   
   @OneToOne(type => Article, article => article.detail)
   article: Article;

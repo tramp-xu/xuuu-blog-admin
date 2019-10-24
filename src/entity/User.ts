@@ -9,7 +9,7 @@ export class User {
   @Column()
   username: string;
 
-  @Column()
+  @Column({ select: false })
   password: string;
 
   @CreateDateColumn({
@@ -17,6 +17,8 @@ export class User {
   })
   createdDate: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({
+    select: false
+  })
   updatedDate: Date;
 } 

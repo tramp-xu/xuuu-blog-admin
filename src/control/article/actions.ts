@@ -42,16 +42,33 @@ export async function getAllArticle (context: Context) {
 
 export async function getAllArticleInfo (context: Context) {
     const repository = getManager().getRepository(Article);
-    const articles = await repository.find({relations: ["detail"]});
+    const articles = await repository.find({
+        relations: ["detail"],
+        join: {
+            alias: 'article',
+            innerJoinAndSelect: {
+                con: 'article.detail.content'
+            }
+        }
+    });
     context.body = {
         code: 200,
         data: articles
     };
 }
+// export async function getAllArticleInfo (context: Context) {
+//     const repository = getManager().getRepository(Article);
+//     const articles = await repository.find({relations: ["detail"]});
+//     context.body = {
+//         code: 200,
+//         data: articles
+//     };
+// }
 
 export async function getArticleInfo (context: Context) {
+    const id = context.query.id
     const repository = getManager().getRepository(Article);
-    const articles = await repository.findOne((context as any).params.id, {
+    const articles = await repository.findOne(id, {
         relations: ["detail"]
     });
 
@@ -71,12 +88,16 @@ export async function addArticle (context: Context) {
     const infoRep = getManager().getRepository(ArticleDetail);
     const data:IArticle = context.request.body
     const { title, tags, content } = data
+    const reg = /(.*\n){8}/
+    const arrs = content.match(reg)
     const articleInfo = new ArticleDetail()
     articleInfo.content = content
+    let shorter = (arrs && arrs.length) ? arrs[0] : content
     await infoRep.save(articleInfo)
 
     const newArticle = repository.create({
         title: title,
+        shorter: shorter,
         tags: tags,
         detail: articleInfo
     })
