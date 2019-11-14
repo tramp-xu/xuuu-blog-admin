@@ -2,16 +2,23 @@ import { Context } from "koa";
 import { getManager } from "typeorm";
 import { Article } from "../../entity/Article";
 import { ArticleDetail } from "../../entity/ArticleDetail";
+import { Tag } from "../../entity/Tag";
+import { getTagsByIds } from "../tag/actions"
 // import * as dayjs from "dayjs";
 
 /**
  *  all users actions from the database.
  */
 
+ interface TagModel {
+     name: string
+     id: number
+ }
+
  interface IArticle {
      title: string,
      content: string,
-     tags?: string[]
+     tags?: TagModel[]
  } 
 
 //  userRepository.find({
@@ -33,7 +40,19 @@ import { ArticleDetail } from "../../entity/ArticleDetail";
 
 export async function getAllArticle (context: Context) {
     const repository = getManager().getRepository(Article);
-    const articles = await repository.find();
+
+    // const articles = repository.createQueryBuilder('article').select().getMany()
+    // const articles = await repository.find({
+    //     join: {
+    //         alias: 'article',
+    //         leftJoinAndSelect: {
+    //             tags: "article.tags"
+    //         }
+    //     }
+    // });
+    const articles = await repository.find({
+        relations: ["tags"]
+    });
     context.body = {
         code: 200,
         data: articles
@@ -43,13 +62,7 @@ export async function getAllArticle (context: Context) {
 export async function getAllArticleInfo (context: Context) {
     const repository = getManager().getRepository(Article);
     const articles = await repository.find({
-        relations: ["detail"],
-        join: {
-            alias: 'article',
-            innerJoinAndSelect: {
-                con: 'article.detail.content'
-            }
-        }
+        relations: ["detail", "tags"]
     });
     context.body = {
         code: 200,
@@ -86,6 +99,7 @@ export async function getArticleInfo (context: Context) {
 export async function addArticle (context: Context) {
     const repository = getManager().getRepository(Article);
     const infoRep = getManager().getRepository(ArticleDetail);
+    // const tagRep = getManager().getRepository(Tag);
     const data:IArticle = context.request.body
     const { title, tags, content } = data
     const reg = /(.*\n){8}/
@@ -95,10 +109,11 @@ export async function addArticle (context: Context) {
     let shorter = (arrs && arrs.length) ? arrs[0] : content
     await infoRep.save(articleInfo)
 
+    let tagEnts = await getTagsByIds(tags)
     const newArticle = repository.create({
         title: title,
         shorter: shorter,
-        tags: tags,
+        tags: tagEnts,
         detail: articleInfo
     })
     await repository.save(newArticle);

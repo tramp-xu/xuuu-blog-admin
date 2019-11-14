@@ -1,6 +1,7 @@
 
 import UserRouter from "./users/index";
 import ArticleRouter from "./article/index";
+import TagRouter from "./tag/index";
 import PostRouter from "./post/index";
 /**
  * All application routes.
@@ -8,6 +9,7 @@ import PostRouter from "./post/index";
 const AppRoutes = [
     ...UserRouter,
     ...ArticleRouter,
+    ...TagRouter,
     ...PostRouter
 ];
 

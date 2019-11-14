@@ -4,9 +4,9 @@ module.exports = {
   host: 'localhost',
   port: 3306,
   username: 'root',
-  password: `${env === 'dev' ? '123456' : 'Xuuu@911'}`,
+  password: `${env === 'production' ?  'Xuuu@911': '123456'}`,
   database: 'myblog',
-  synchronize: `${env === 'dev' ? true : false}`,
-  logging: `${env === 'dev' ? true : false}`,
-  entities: [`${env === 'dev' ? 'src' : 'dist'}/entity/*{.ts,.js}`]
+  synchronize: `${env === 'production' ? false : true}`,
+  logging: `${env === 'production' ? false : true}`,
+  entities: [`${env === 'production' ? 'dist' : 'src'}/entity/*{.ts,.js}`]
 };
