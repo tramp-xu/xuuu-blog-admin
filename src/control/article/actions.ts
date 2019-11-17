@@ -2,7 +2,6 @@ import { Context } from "koa";
 import { getManager } from "typeorm";
 import { Article } from "../../entity/Article";
 import { ArticleDetail } from "../../entity/ArticleDetail";
-import { Tag } from "../../entity/Tag";
 import { getTagsByIds } from "../tag/actions"
 // import * as dayjs from "dayjs";
 
@@ -99,9 +98,16 @@ export async function getArticleInfo (context: Context) {
 export async function addArticle (context: Context) {
     const repository = getManager().getRepository(Article);
     const infoRep = getManager().getRepository(ArticleDetail);
-    // const tagRep = getManager().getRepository(Tag);
     const data:IArticle = context.request.body
     const { title, tags, content } = data
+    let dbArticle = await repository.findOne({ title })
+    if (dbArticle) {
+        context.body = {
+            code: 0,
+            message: `存在同名文章 ${title}`
+        }
+        return
+    }
     const reg = /(.*\n){8}/
     const arrs = content.match(reg)
     const articleInfo = new ArticleDetail()
