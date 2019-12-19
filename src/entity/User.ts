@@ -12,6 +12,9 @@ export class User {
   @Column({ select: false })
   password: string;
 
+  @Column()
+  grade: string = 'custom';
+
   @CreateDateColumn({
     type: "timestamp"
   })

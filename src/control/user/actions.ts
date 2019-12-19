@@ -58,7 +58,9 @@ export async function login (context: Context) {
     const data = context.request.body
     const { username, password } = data
     const repository = getManager().getRepository(User);
-    let dbUser = await repository.findOne({ username })
+    let dbUser = await repository.findOne({ username }, {
+        select: ['username', 'password']
+    })
     if (dbUser) {
         if (password === dbUser.password) {
             context.body = {
